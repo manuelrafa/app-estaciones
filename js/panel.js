@@ -2,7 +2,6 @@ const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const chipid = urlParams.get('chipid');
 
-
 document.addEventListener('DOMContentLoaded', () => {
 
     hideAllPropertiesExcept(temp_container);
@@ -15,12 +14,19 @@ document.addEventListener('DOMContentLoaded', () => {
             station_location.querySelector('span').textContent = data.ubicacion;
         }
     });
+    
     getStationData(1).then(data => {
-        console.log(data);
         if (data.errno == 200) {
             showStationData(data.data[0]);
         }
     });
+    setInterval(() => {
+        getStationData(1).then(data => {
+            if (data.errno == 200) {
+                showStationData(data.data[0]);
+            }
+        });
+    }, 60000, 1);
 
 });
 
